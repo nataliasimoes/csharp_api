@@ -10,7 +10,7 @@ public class UsuarioController : ControllerBase
 {
     // GET: api/<UsuarioController>
     [HttpGet]
-    public IEnumerable<UsuarioModel> Get()
+    public ActionResult<List<UsuarioModel>> GetAllUser()
     {
         List<UsuarioModel> usuarios = new List<UsuarioModel>();
 
@@ -21,20 +21,22 @@ public class UsuarioController : ControllerBase
 
     // GET api/<UsuarioController>/5
     [HttpGet("{id}")]
-    public string Get(int id)
+    public UsuarioModel Get(int id)
     {
-        return "value";
+        UsuarioModel usuario =  new UsuarioModel() { Id = 1, Email = "natalia@gmail.com", Nome = "Natália Simões" };
+        return usuario;
     }
 
     // POST api/<UsuarioController>
     [HttpPost]
-    public void Post([FromBody] string value)
+    public void Post([FromBody] UsuarioModel usuario)
     {
+
     }
 
     // PUT api/<UsuarioController>/5
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    public void Put(int id, [FromBody] UsuarioModel usuario)
     {
     }
 
