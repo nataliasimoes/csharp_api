@@ -2,7 +2,7 @@
 
 namespace CadastroDeContatos.Enums;
 
-public enum StatusTarefaEnum
+public enum StatusTaskEnum
 {
     [Description("A fazer")]
     ToDo = 1,
