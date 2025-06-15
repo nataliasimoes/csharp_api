@@ -1,4 +1,5 @@
 ﻿using api_csharp.Data;
+using api_csharp.DTO;
 using api_csharp.Models;
 using api_csharp.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -23,42 +24,47 @@ public class UserRepository : IUserRepository
     {
         return await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
     }
-    public async Task<UserModel> AddUser(UserModel usuario)
+    public async Task<UserModel> AddUser(UserDTO dto)
     {
-        usuario.DataUltimaAlteracao = DateTime.Now;
-        await _context.Usuarios.AddAsync(usuario);
+        var user = new UserModel
+        {
+            Email = dto.Email,
+            Nome = dto.Nome,
+            DataUltimaAlteracao = DateTime.Now
+        };
+        await _context.Usuarios.AddAsync(user);
         await _context.SaveChangesAsync();
 
-        return usuario;
+        return user;
     }
-    public async Task<UserModel> UpdateUser(UserModel usuario, int id)
+    public async Task<UserModel> UpdateUser(UserDTO user, int id)
     {
-        UserModel usuarioDb = await GetById(id);
+        UserModel userDb = await GetById(id);
 
-        if (usuarioDb == null)
+        if (userDb == null)
         {
             throw new Exception("Usuário não foi encontrado");
         }
 
-        usuarioDb.Nome = usuario.Nome;
-        usuarioDb.Email = usuario.Email;
-        usuarioDb.DataUltimaAlteracao = DateTime.Now;
+        userDb.Nome = user.Nome;
+        userDb.Email = user.Email;
+        userDb.DataUltimaAlteracao = DateTime.Now;
 
-        _context.Usuarios.Update(usuarioDb);
+        _context.Usuarios.Update(userDb);
         await _context.SaveChangesAsync();
 
-        return usuarioDb;
+        return userDb;
     }
     public async Task<bool> Delete(int id)
     {
-        UserModel usuario = await GetById(id);
+        UserModel user = await GetById(id);
 
-        if (usuario == null)
+        if (user == null)
         {
             throw new Exception("Usuário não foi encontrado");
         }
 
-        _context.Usuarios.Remove(usuario);
+        _context.Usuarios.Remove(user);
         await _context.SaveChangesAsync();
 
         return true;

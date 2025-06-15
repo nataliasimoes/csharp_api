@@ -1,4 +1,5 @@
-﻿using api_csharp.Models;
+﻿using api_csharp.DTO;
+using api_csharp.Models;
 using api_csharp.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,7 +34,7 @@ public class TaskController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<TaskModel>> CreateTask([FromBody] TaskModel tarefa)
+    public async Task<ActionResult<TaskModel>> CreateTask([FromBody] CreateTaskDTO tarefa)
     {
         TaskModel taskRegistered = await _taskRepository.AddTask(tarefa);
 
@@ -41,9 +42,8 @@ public class TaskController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<TaskModel>> UpdateTask([FromBody] TaskModel tarefa, int id)
+    public async Task<ActionResult<TaskModel>> UpdateTask([FromBody] UpdateTaskDTO tarefa, int id)
     {
-        tarefa.Id = id;
         TaskModel taskUpdated = await _taskRepository.UpdateTask(tarefa, id);
 
         return Ok(taskUpdated);

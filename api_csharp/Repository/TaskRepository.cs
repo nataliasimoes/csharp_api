@@ -1,6 +1,8 @@
 ﻿using api_csharp.Data;
+using api_csharp.DTO;
 using api_csharp.Models;
 using api_csharp.Repository.Interfaces;
+using CadastroDeContatos.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace api_csharp.Repository;
@@ -13,6 +15,7 @@ public class TaskRepository : ITaskRepository
     {
         _context = sistemaDBContext;
     }
+
     public async Task<List<TaskModel>> GetAllTasks()
     {
         return await _context.Tarefas
@@ -26,65 +29,76 @@ public class TaskRepository : ITaskRepository
             .Include(x => x.Usuario)
             .FirstOrDefaultAsync(u => u.Id == id);
     }
-    public async Task<TaskModel> AddTask(TaskModel tarefa)
+
+    public async Task<TaskModel> AddTask(CreateTaskDTO dto)
     {
-        tarefa.DataUltimaAlteracao = DateTime.Now;
-        await _context.Tarefas.AddAsync(tarefa);
+        var task = new TaskModel
+        {
+            Nome = dto.Nome,
+            Descricao = dto.Descricao,
+            Status = (StatusTaskEnum)dto.Status,
+            UsuarioId = dto.UsuarioId,
+            DataPrazo = dto.DataPrazo,
+            DataUltimaAlteracao = DateTime.Now
+        };
+
+        await _context.Tarefas.AddAsync(task);
         await _context.SaveChangesAsync();
 
-        return tarefa;
+        return task;
     }
-    public async Task<TaskModel> UpdateTask(TaskModel tarefa, int id)
-    {
-        TaskModel tarefaDb = await GetById(id);
 
-        if (tarefaDb == null)
+    public async Task<TaskModel> UpdateTask(UpdateTaskDTO task, int id)
+    {
+        TaskModel taskDb = await GetById(id);
+
+        if (taskDb == null)
         {
             throw new Exception("Tarefa não foi encontrada");
         }
 
-        tarefaDb.Nome = tarefa.Nome;
-        tarefaDb.Descricao = tarefa.Descricao;
-        tarefaDb.Status = tarefa.Status;
-        tarefaDb.UsuarioId = tarefa.UsuarioId;
-        tarefaDb.DataPrazo = tarefa.DataPrazo;
-        tarefaDb.DataConclusao = tarefa.DataConclusao;
-        tarefaDb.DataUltimaAlteracao = DateTime.Now;
+        taskDb.Nome = task.Nome;
+        taskDb.Descricao = task.Descricao;
+        taskDb.Status = (StatusTaskEnum)task.Status;
+        taskDb.UsuarioId = task.UsuarioId;
+        taskDb.DataPrazo = task.DataPrazo;
+        taskDb.DataConclusao = task.DataConclusao;
+        taskDb.DataUltimaAlteracao = DateTime.Now;
 
-        _context.Tarefas.Update(tarefaDb);
+        _context.Tarefas.Update(taskDb);
         await _context.SaveChangesAsync();
 
-        return tarefaDb;
+        return taskDb;
     }
 
     public async Task<TaskModel> MarkTaskAsCompleted(int id)
     {
-        TaskModel tarefaDb = await GetById(id);
+        TaskModel taskDb = await GetById(id);
 
-        if (tarefaDb == null)
+        if (taskDb == null)
         {
             throw new Exception("Tarefa não foi encontrada");
         }
 
-        tarefaDb.DataConclusao = DateTime.Now;
-        tarefaDb.DataUltimaAlteracao = DateTime.Now;
+        taskDb.DataConclusao = DateTime.Now;
+        taskDb.DataUltimaAlteracao = DateTime.Now;
 
-        _context.Tarefas.Update(tarefaDb);
+        _context.Tarefas.Update(taskDb);
         await _context.SaveChangesAsync();
 
-        return tarefaDb;
+        return taskDb;
     }
 
     public async Task<bool> Delete(int id)
     {
-        TaskModel tarefa = await GetById(id);
+        TaskModel task = await GetById(id);
 
-        if (tarefa == null)
+        if (task == null)
         {
-            throw new Exception("Usuário não foi encontrado");
+            throw new Exception("Tarefa não foi encontrada");
         }
 
-        _context.Tarefas.Remove(tarefa);
+        _context.Tarefas.Remove(task);
         await _context.SaveChangesAsync();
 
         return true;

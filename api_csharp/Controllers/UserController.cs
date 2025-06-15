@@ -1,4 +1,5 @@
-﻿using api_csharp.Models;
+﻿using api_csharp.DTO;
+using api_csharp.Models;
 using api_csharp.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,7 +34,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<UserModel>> CreateUser([FromBody] UserModel user)
+    public async Task<ActionResult<UserModel>> CreateUser([FromBody] UserDTO user)
     {
         UserModel userRegistered = await _userRepository.AddUser(user);
 
@@ -41,15 +42,13 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<UserModel>> UpdateUser([FromBody] UserModel user, int id)
+    public async Task<ActionResult<UserModel>> UpdateUser([FromBody] UserDTO user, int id)
     {
-        user.Id = id;
         UserModel userUpdated = await _userRepository.UpdateUser(user, id);
 
         return Ok(userUpdated);
     }
 
-    // DELETE api/<UsuarioController>/5
     [HttpDelete("{id}")]
     public async Task<ActionResult<UserModel>> DeleteUser(int id)
     {
