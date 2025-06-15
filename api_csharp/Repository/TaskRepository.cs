@@ -16,6 +16,41 @@ public class TaskRepository : ITaskRepository
         _context = sistemaDBContext;
     }
 
+    public async Task<List<TaskModel>> FilterTask(FilterTaskDTO filter)
+    {
+        var query = _context.Tarefas.AsQueryable();
+
+        if (!string.IsNullOrEmpty(filter.Nome))
+        {
+            query = query.Where(t => t.Nome.Contains(filter.Nome));
+        }
+
+        if (filter.Status.HasValue)
+        {
+            query = query.Where(t => t.Status == filter.Status.Value);
+        }
+
+        if (filter.UsuarioId.HasValue)
+        {
+            query = query.Where(t => t.UsuarioId == filter.UsuarioId);
+        }
+
+        if (filter.TarefaEmAtraso.HasValue)
+        {
+            if (filter.TarefaEmAtraso.Value)
+            {
+                query = query.Where(t => !t.DataConclusao.HasValue && t.DataPrazo.HasValue && t.DataPrazo.Value.Date < DateTime.Now);
+            }
+            else
+            {
+                query = query.Where(t => t.DataPrazo.HasValue && t.DataPrazo.Value.Date < DateTime.Now || !t.DataPrazo.HasValue);
+            }
+        }
+
+        return await query.ToListAsync();
+    }
+
+
     public async Task<List<TaskModel>> GetAllTasks()
     {
         return await _context.Tarefas
@@ -80,6 +115,7 @@ public class TaskRepository : ITaskRepository
             throw new Exception("Tarefa não foi encontrada");
         }
 
+        taskDb.Status = StatusTaskEnum.Completed;
         taskDb.DataConclusao = DateTime.Now;
         taskDb.DataUltimaAlteracao = DateTime.Now;
 

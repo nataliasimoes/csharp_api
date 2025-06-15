@@ -1,10 +1,18 @@
-﻿namespace api_csharp.DTO;
+﻿using CadastroDeContatos.Enums;
+using System.ComponentModel.DataAnnotations;
+
+namespace api_csharp.DTO;
 
 public class CreateTaskDTO
 {
+    [Required]
     public string Nome { get; set; }
-    public string? Descricao { get; set; }
-    public int Status { get; set; }
-    public int? UsuarioId { get; set; }  // Pode ser nulo, se a tarefa for criada sem usuário
-    public DateTime? DataPrazo { get; set; }  // Definir um prazo, opcional
+    [Required]
+    [StringLength(500)]
+    public string Descricao { get; set; }
+    [Required]
+    [Range(1, 3, ErrorMessage = "Invalid status")]
+    public StatusTaskEnum Status { get; set; }
+    public int? UsuarioId { get; set; }
+    public DateTime? DataPrazo { get; set; } 
 }

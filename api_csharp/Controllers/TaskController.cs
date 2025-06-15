@@ -25,6 +25,14 @@ public class TaskController : ControllerBase
         return Ok(tasks);
     }
 
+    [HttpGet("/api/Task/Filter")]
+    public async Task<ActionResult<List<TaskModel>>> Filtertasks([FromQuery] FilterTaskDTO filter)
+    {
+        List<TaskModel> tasks = await _taskRepository.FilterTask(filter);
+
+        return Ok(tasks);
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<List<TaskModel>>> GetTaskById(int id)
     {
