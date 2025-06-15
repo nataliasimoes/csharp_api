@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace api_csharp.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class UsuarioController : ControllerBase
+public class UserController : ControllerBase
 {
     public readonly IUserRepository _userRepository;
 
-    public UsuarioController(IUserRepository userRepository)
+    public UserController(IUserRepository userRepository)
     {
         _userRepository = userRepository;
     }
@@ -25,7 +25,7 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<List<UserModel>>> GetAllUser(int id)
+    public async Task<ActionResult<List<UserModel>>> GetAllUsers(int id)
     {
         UserModel usuarios = await _userRepository.GetById(id);
 
@@ -51,7 +51,7 @@ public class UsuarioController : ControllerBase
 
     // DELETE api/<UsuarioController>/5
     [HttpDelete("{id}")]
-    public async Task<ActionResult<UserModel>> Delete(int id)
+    public async Task<ActionResult<UserModel>> DeleteUser(int id)
     {
         bool deleted = await _userRepository.Delete(id);
 

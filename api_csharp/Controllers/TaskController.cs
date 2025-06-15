@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace api_csharp.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class TarefaController : ControllerBase
+public class TaskController : ControllerBase
 {
     public readonly ITaskRepository _taskRepository;
 
-    public TarefaController(ITaskRepository tarefaRepository)
+    public TaskController(ITaskRepository tarefaRepository)
     {
         _taskRepository = tarefaRepository;
     }
@@ -49,7 +49,8 @@ public class TarefaController : ControllerBase
         return Ok(taskUpdated);
     }
 
-    [HttpPut("/api/Tarefa/Complete/{id}")]
+    [HttpPut("/api/Task" +
+        "/Complete/{id}")]
     public async Task<ActionResult<TaskModel>> CompleteTask(int id)
     {
         TaskModel taskUpdated = await _taskRepository.MarkTaskAsCompleted(id);
