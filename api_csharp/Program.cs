@@ -22,8 +22,8 @@ public class Program
             options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
             );
 
-        builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-        builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
         var app = builder.Build();
 

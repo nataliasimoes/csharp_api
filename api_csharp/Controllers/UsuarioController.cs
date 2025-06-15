@@ -9,9 +9,9 @@ namespace api_csharp.Controllers;
 [ApiController]
 public class UsuarioController : ControllerBase
 {
-    public readonly IUsuarioRepository _userRepository;
+    public readonly IUserRepository _userRepository;
 
-    public UsuarioController(IUsuarioRepository userRepository)
+    public UsuarioController(IUserRepository userRepository)
     {
         _userRepository = userRepository;
     }

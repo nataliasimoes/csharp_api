@@ -2,7 +2,7 @@
 
 namespace api_csharp.Repository.Interfaces;
 
-public interface IUsuarioRepository
+public interface IUserRepository
 {
     // O Task cria uma função assincrona
     Task<List<UserModel>> GetAllUsers();

@@ -2,7 +2,7 @@
 
 namespace api_csharp.Repository.Interfaces;
 
-public interface ITarefaRepository
+public interface ITaskRepository
 {
     Task<List<TaskModel>> GetAllTasks();
     Task<TaskModel> GetById(int id);

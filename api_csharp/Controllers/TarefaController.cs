@@ -9,9 +9,9 @@ namespace api_csharp.Controllers;
 [ApiController]
 public class TarefaController : ControllerBase
 {
-    public readonly ITarefaRepository _taskRepository;
+    public readonly ITaskRepository _taskRepository;
 
-    public TarefaController(ITarefaRepository tarefaRepository)
+    public TarefaController(ITaskRepository tarefaRepository)
     {
         _taskRepository = tarefaRepository;
     }

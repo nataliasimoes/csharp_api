@@ -6,11 +6,11 @@ using System;
 
 namespace api_csharp.Repository;
 
-public class UsuarioRepository : IUsuarioRepository
+public class UserRepository : IUserRepository
 {
     // Injeta o Context
     private readonly SistemaDBContext _context;
-    public UsuarioRepository(SistemaDBContext sistemaDBContext)
+    public UserRepository(SistemaDBContext sistemaDBContext)
     {
         _context = sistemaDBContext;
     }

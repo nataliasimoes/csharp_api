@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api_csharp.Repository;
 
-public class TarefaRepository : ITarefaRepository
+public class TaskRepository : ITaskRepository
 {
     // Injeta o Context
     private readonly SistemaDBContext _context;
-    public TarefaRepository(SistemaDBContext sistemaDBContext)
+    public TaskRepository(SistemaDBContext sistemaDBContext)
     {
         _context = sistemaDBContext;
     }
