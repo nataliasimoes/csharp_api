@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace api_csharp.Data.Map;
 
-public class TarefaMap : IEntityTypeConfiguration<TarefaModel>
+public class TarefaMap : IEntityTypeConfiguration<TaskModel>
 {
-    public void Configure(EntityTypeBuilder<TarefaModel> builder)
+    public void Configure(EntityTypeBuilder<TaskModel> builder)
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Nome).IsRequired().HasMaxLength(255);

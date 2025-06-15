@@ -17,48 +17,48 @@ public class TarefaController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<TarefaModel>>> GetAlltasks()
+    public async Task<ActionResult<List<TaskModel>>> GetAlltasks()
     {
-        List<TarefaModel> tasks = await _taskRepository.GetAllTasks();
+        List<TaskModel> tasks = await _taskRepository.GetAllTasks();
 
         return Ok(tasks);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<List<TarefaModel>>> GetTaskById(int id)
+    public async Task<ActionResult<List<TaskModel>>> GetTaskById(int id)
     {
-        TarefaModel tasks = await _taskRepository.GetById(id);
+        TaskModel tasks = await _taskRepository.GetById(id);
 
         return Ok(tasks);
     }
 
     [HttpPost]
-    public async Task<ActionResult<TarefaModel>> CreateTask([FromBody] TarefaModel tarefa)
+    public async Task<ActionResult<TaskModel>> CreateTask([FromBody] TaskModel tarefa)
     {
-        TarefaModel taskRegistered = await _taskRepository.AddTask(tarefa);
+        TaskModel taskRegistered = await _taskRepository.AddTask(tarefa);
 
         return Ok(taskRegistered);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<TarefaModel>> UpdateTask([FromBody] TarefaModel tarefa, int id)
+    public async Task<ActionResult<TaskModel>> UpdateTask([FromBody] TaskModel tarefa, int id)
     {
         tarefa.Id = id;
-        TarefaModel taskUpdated = await _taskRepository.UpdateTask(tarefa, id);
+        TaskModel taskUpdated = await _taskRepository.UpdateTask(tarefa, id);
 
         return Ok(taskUpdated);
     }
 
     [HttpPut("/api/Tarefa/Complete/{id}")]
-    public async Task<ActionResult<TarefaModel>> CompleteTask(int id)
+    public async Task<ActionResult<TaskModel>> CompleteTask(int id)
     {
-        TarefaModel taskUpdated = await _taskRepository.MarkTaskAsCompleted(id);
+        TaskModel taskUpdated = await _taskRepository.MarkTaskAsCompleted(id);
 
         return Ok(taskUpdated);
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<TarefaModel>> Delete(int id)
+    public async Task<ActionResult<TaskModel>> Delete(int id)
     {
         bool deleted = await _taskRepository.Delete(id);
 

@@ -10,8 +10,8 @@ public class SistemaDBContext : DbContext
     {
     }
 
-    public DbSet<UsuarioModel> Usuarios { get; set; }
-    public DbSet<TarefaModel> Tarefas { get; set; }
+    public DbSet<UserModel> Usuarios { get; set; }
+    public DbSet<TaskModel> Tarefas { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

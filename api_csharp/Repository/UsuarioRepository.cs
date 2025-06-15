@@ -14,16 +14,16 @@ public class UsuarioRepository : IUsuarioRepository
     {
         _context = sistemaDBContext;
     }
-    public async Task<List<UsuarioModel>> GetAllUsers()
+    public async Task<List<UserModel>> GetAllUsers()
     {
         return await _context.Usuarios.ToListAsync();
     }
 
-    public async Task<UsuarioModel> GetById(int id)
+    public async Task<UserModel> GetById(int id)
     {
         return await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
     }
-    public async Task<UsuarioModel> AddUser(UsuarioModel usuario)
+    public async Task<UserModel> AddUser(UserModel usuario)
     {
         usuario.DataUltimaAlteracao = DateTime.Now;
         await _context.Usuarios.AddAsync(usuario);
@@ -31,9 +31,9 @@ public class UsuarioRepository : IUsuarioRepository
 
         return usuario;
     }
-    public async Task<UsuarioModel> UpdateUser(UsuarioModel usuario, int id)
+    public async Task<UserModel> UpdateUser(UserModel usuario, int id)
     {
-        UsuarioModel usuarioDb = await GetById(id);
+        UserModel usuarioDb = await GetById(id);
 
         if (usuarioDb == null)
         {
@@ -51,7 +51,7 @@ public class UsuarioRepository : IUsuarioRepository
     }
     public async Task<bool> Delete(int id)
     {
-        UsuarioModel usuario = await GetById(id);
+        UserModel usuario = await GetById(id);
 
         if (usuario == null)
         {

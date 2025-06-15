@@ -17,41 +17,41 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<UsuarioModel>>> GetAllUser()
+    public async Task<ActionResult<List<UserModel>>> GetAllUser()
     {
-        List<UsuarioModel> usuarios = await _userRepository.GetAllUsers();
+        List<UserModel> usuarios = await _userRepository.GetAllUsers();
 
         return Ok(usuarios);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<List<UsuarioModel>>> GetAllUser(int id)
+    public async Task<ActionResult<List<UserModel>>> GetAllUser(int id)
     {
-        UsuarioModel usuarios = await _userRepository.GetById(id);
+        UserModel usuarios = await _userRepository.GetById(id);
 
         return Ok(usuarios);
     }
 
     [HttpPost]
-    public async Task<ActionResult<UsuarioModel>> CreateUser([FromBody] UsuarioModel user)
+    public async Task<ActionResult<UserModel>> CreateUser([FromBody] UserModel user)
     {
-        UsuarioModel userRegistered = await _userRepository.AddUser(user);
+        UserModel userRegistered = await _userRepository.AddUser(user);
 
         return Ok(userRegistered);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<UsuarioModel>> UpdateUser([FromBody] UsuarioModel user, int id)
+    public async Task<ActionResult<UserModel>> UpdateUser([FromBody] UserModel user, int id)
     {
         user.Id = id;
-        UsuarioModel userUpdated = await _userRepository.UpdateUser(user, id);
+        UserModel userUpdated = await _userRepository.UpdateUser(user, id);
 
         return Ok(userUpdated);
     }
 
     // DELETE api/<UsuarioController>/5
     [HttpDelete("{id}")]
-    public async Task<ActionResult<UsuarioModel>> Delete(int id)
+    public async Task<ActionResult<UserModel>> Delete(int id)
     {
         bool deleted = await _userRepository.Delete(id);
 

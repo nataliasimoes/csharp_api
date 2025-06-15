@@ -2,7 +2,7 @@
 
 namespace api_csharp.Models;
 
-public class TarefaModel
+public class TaskModel
 {
     public int Id { get; set; }
     public string? Nome { get; set; }
@@ -13,5 +13,5 @@ public class TarefaModel
     public DateTime? DataPrazo { get; set; }
     public DateTime? DataConclusao { get; set; }
 
-    public virtual UsuarioModel? Usuario { get; set; }
+    public virtual UserModel? Usuario { get; set; }
 }

@@ -13,20 +13,20 @@ public class TarefaRepository : ITarefaRepository
     {
         _context = sistemaDBContext;
     }
-    public async Task<List<TarefaModel>> GetAllTasks()
+    public async Task<List<TaskModel>> GetAllTasks()
     {
         return await _context.Tarefas
             .Include(x => x.Usuario)
             .ToListAsync();
     }
 
-    public async Task<TarefaModel> GetById(int id)
+    public async Task<TaskModel> GetById(int id)
     {
         return await _context.Tarefas
             .Include(x => x.Usuario)
             .FirstOrDefaultAsync(u => u.Id == id);
     }
-    public async Task<TarefaModel> AddTask(TarefaModel tarefa)
+    public async Task<TaskModel> AddTask(TaskModel tarefa)
     {
         tarefa.DataUltimaAlteracao = DateTime.Now;
         await _context.Tarefas.AddAsync(tarefa);
@@ -34,9 +34,9 @@ public class TarefaRepository : ITarefaRepository
 
         return tarefa;
     }
-    public async Task<TarefaModel> UpdateTask(TarefaModel tarefa, int id)
+    public async Task<TaskModel> UpdateTask(TaskModel tarefa, int id)
     {
-        TarefaModel tarefaDb = await GetById(id);
+        TaskModel tarefaDb = await GetById(id);
 
         if (tarefaDb == null)
         {
@@ -57,9 +57,9 @@ public class TarefaRepository : ITarefaRepository
         return tarefaDb;
     }
 
-    public async Task<TarefaModel> MarkTaskAsCompleted(int id)
+    public async Task<TaskModel> MarkTaskAsCompleted(int id)
     {
-        TarefaModel tarefaDb = await GetById(id);
+        TaskModel tarefaDb = await GetById(id);
 
         if (tarefaDb == null)
         {
@@ -77,7 +77,7 @@ public class TarefaRepository : ITarefaRepository
 
     public async Task<bool> Delete(int id)
     {
-        TarefaModel tarefa = await GetById(id);
+        TaskModel tarefa = await GetById(id);
 
         if (tarefa == null)
         {
