@@ -28,6 +28,7 @@ public class TarefaRepository : ITarefaRepository
     }
     public async Task<TarefaModel> AddTask(TarefaModel tarefa)
     {
+        tarefa.DataUltimaAlteracao = DateTime.Now;
         await _context.Tarefas.AddAsync(tarefa);
         await _context.SaveChangesAsync();
 
@@ -46,12 +47,34 @@ public class TarefaRepository : ITarefaRepository
         tarefaDb.Descricao = tarefa.Descricao;
         tarefaDb.Status = tarefa.Status;
         tarefaDb.UsuarioId = tarefa.UsuarioId;
+        tarefaDb.DataPrazo = tarefa.DataPrazo;
+        tarefaDb.DataConclusao = tarefa.DataConclusao;
+        tarefaDb.DataUltimaAlteracao = DateTime.Now;
 
         _context.Tarefas.Update(tarefaDb);
         await _context.SaveChangesAsync();
 
         return tarefaDb;
     }
+
+    public async Task<TarefaModel> MarkTaskAsCompleted(int id)
+    {
+        TarefaModel tarefaDb = await GetById(id);
+
+        if (tarefaDb == null)
+        {
+            throw new Exception("Tarefa não foi encontrada");
+        }
+
+        tarefaDb.DataConclusao = DateTime.Now;
+        tarefaDb.DataUltimaAlteracao = DateTime.Now;
+
+        _context.Tarefas.Update(tarefaDb);
+        await _context.SaveChangesAsync();
+
+        return tarefaDb;
+    }
+
     public async Task<bool> Delete(int id)
     {
         TarefaModel tarefa = await GetById(id);

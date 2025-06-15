@@ -9,51 +9,58 @@ namespace api_csharp.Controllers;
 [ApiController]
 public class TarefaController : ControllerBase
 {
-    public readonly ITarefaRepository _tarefaRepository;
+    public readonly ITarefaRepository _taskRepository;
 
     public TarefaController(ITarefaRepository tarefaRepository)
     {
-        _tarefaRepository = tarefaRepository;
+        _taskRepository = tarefaRepository;
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<TarefaModel>>> GetAlltarefa()
+    public async Task<ActionResult<List<TarefaModel>>> GetAlltasks()
     {
-        List<TarefaModel> usuarios = await _tarefaRepository.GetAllTasks();
+        List<TarefaModel> tasks = await _taskRepository.GetAllTasks();
 
-        return Ok(usuarios);
+        return Ok(tasks);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<List<TarefaModel>>> GetAllTasks(int id)
+    public async Task<ActionResult<List<TarefaModel>>> GetTaskById(int id)
     {
-        TarefaModel usuarios = await _tarefaRepository.GetById(id);
+        TarefaModel tasks = await _taskRepository.GetById(id);
 
-        return Ok(usuarios);
+        return Ok(tasks);
     }
 
     [HttpPost]
-    public async Task<ActionResult<TarefaModel>> Createtarefa([FromBody] TarefaModel tarefa)
+    public async Task<ActionResult<TarefaModel>> CreateTask([FromBody] TarefaModel tarefa)
     {
-        TarefaModel tarefaRegistered = await _tarefaRepository.AddTask(tarefa);
+        TarefaModel taskRegistered = await _taskRepository.AddTask(tarefa);
 
-        return Ok(tarefaRegistered);
+        return Ok(taskRegistered);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<TarefaModel>> Updatetarefa([FromBody] TarefaModel tarefa, int id)
+    public async Task<ActionResult<TarefaModel>> UpdateTask([FromBody] TarefaModel tarefa, int id)
     {
         tarefa.Id = id;
-        TarefaModel tarefaUpdated = await _tarefaRepository.UpdateTask(tarefa, id);
+        TarefaModel taskUpdated = await _taskRepository.UpdateTask(tarefa, id);
 
-        return Ok(tarefaUpdated);
+        return Ok(taskUpdated);
     }
 
-    // DELETE api/<UsuarioController>/5
+    [HttpPut("/api/Tarefa/Complete/{id}")]
+    public async Task<ActionResult<TarefaModel>> CompleteTask(int id)
+    {
+        TarefaModel taskUpdated = await _taskRepository.MarkTaskAsCompleted(id);
+
+        return Ok(taskUpdated);
+    }
+
     [HttpDelete("{id}")]
     public async Task<ActionResult<TarefaModel>> Delete(int id)
     {
-        bool deleted = await _tarefaRepository.Delete(id);
+        bool deleted = await _taskRepository.Delete(id);
 
         return Ok(deleted);
     }

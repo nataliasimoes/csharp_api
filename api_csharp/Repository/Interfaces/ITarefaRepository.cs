@@ -8,5 +8,6 @@ public interface ITarefaRepository
     Task<TarefaModel> GetById(int id);
     Task<TarefaModel> AddTask(TarefaModel task);
     Task<TarefaModel> UpdateTask(TarefaModel task, int id);
+    Task<TarefaModel> MarkTaskAsCompleted(int id);
     Task<bool> Delete(int id);
 }
