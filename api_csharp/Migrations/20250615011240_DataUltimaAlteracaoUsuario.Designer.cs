@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api_csharp.Data;
 
@@ -11,9 +12,11 @@ using api_csharp.Data;
 namespace apicsharp.Migrations
 {
     [DbContext(typeof(SistemaDBContext))]
-    partial class SistemaDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250615011240_DataUltimaAlteracaoUsuario")]
+    partial class DataUltimaAlteracaoUsuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -2,6 +2,7 @@
 using api_csharp.Models;
 using api_csharp.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace api_csharp.Repository;
 
@@ -24,6 +25,7 @@ public class UsuarioRepository : IUsuarioRepository
     }
     public async Task<UsuarioModel> AddUser(UsuarioModel usuario)
     {
+        usuario.DataUltimaAlteracao = DateTime.Now;
         await _context.Usuarios.AddAsync(usuario);
         await _context.SaveChangesAsync();
 
@@ -40,6 +42,7 @@ public class UsuarioRepository : IUsuarioRepository
 
         usuarioDb.Nome = usuario.Nome;
         usuarioDb.Email = usuario.Email;
+        usuarioDb.DataUltimaAlteracao = DateTime.Now;
 
         _context.Usuarios.Update(usuarioDb);
         await _context.SaveChangesAsync();
