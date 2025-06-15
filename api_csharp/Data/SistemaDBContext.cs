@@ -15,8 +15,8 @@ public class SistemaDBContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new UsuarioMap());
-        modelBuilder.ApplyConfiguration(new  TarefaMap());
+        modelBuilder.ApplyConfiguration(new UserMap());
+        modelBuilder.ApplyConfiguration(new  TaskMap());
         base.OnModelCreating(modelBuilder);
     }
 }

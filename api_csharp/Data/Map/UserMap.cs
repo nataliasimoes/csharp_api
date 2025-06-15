@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace api_csharp.Data.Map;
 
-public class UsuarioMap : IEntityTypeConfiguration<UserModel>
+public class UserMap : IEntityTypeConfiguration<UserModel>
 {
     public void Configure(EntityTypeBuilder<UserModel> builder)
     {

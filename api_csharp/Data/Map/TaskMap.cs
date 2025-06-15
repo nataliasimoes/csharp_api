@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace api_csharp.Data.Map;
 
-public class TarefaMap : IEntityTypeConfiguration<TaskModel>
+public class TaskMap : IEntityTypeConfiguration<TaskModel>
 {
     public void Configure(EntityTypeBuilder<TaskModel> builder)
     {
