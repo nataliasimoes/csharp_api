@@ -1,9 +1,12 @@
 using api_csharp.Data;
 using api_csharp.Repository;
 using api_csharp.Repository.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Text;
 
 namespace api_csharp;
 
@@ -11,6 +14,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        string secretKey = "";
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
@@ -37,6 +41,24 @@ public class Program
             c.IncludeXmlComments(xmlPath);
         });
 
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = "sua_empresa",
+                ValidAudience = "sua_aplicacao",
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+            };
+        });
+        
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -48,7 +70,9 @@ public class Program
 
         app.UseHttpsRedirection();
 
+        app.UseAuthentication();
         app.UseAuthorization();
+
 
 
         app.MapControllers();
