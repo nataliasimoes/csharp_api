@@ -24,12 +24,13 @@ public class UserRepository : IUserRepository
     {
         return await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
     }
-    public async Task<UserModel> AddUser(UserDTO dto)
+    public async Task<UserModel> AddUser(CreateUserDTO dto)
     {
         var user = new UserModel
         {
             Email = dto.Email,
             Nome = dto.Nome,
+            Senha = BCrypt.Net.BCrypt.HashPassword(dto.Senha),
             DataUltimaAlteracao = DateTime.Now
         };
         await _context.Usuarios.AddAsync(user);
@@ -37,17 +38,13 @@ public class UserRepository : IUserRepository
 
         return user;
     }
-    public async Task<UserModel> UpdateUser(UserDTO user, int id)
+    public async Task<UserModel> UpdateUser(UpdateUserDTO user, int id)
     {
-        UserModel userDb = await GetById(id);
+        UserModel userDb = await GetById(id) ?? throw new Exception("Usuário não foi encontrado");
 
-        if (userDb == null)
-        {
-            throw new Exception("Usuário não foi encontrado");
-        }
-
-        userDb.Nome = user.Nome;
-        userDb.Email = user.Email;
+        userDb.Nome = user.Nome ?? userDb.Nome;
+        userDb.Email = user.Email ?? userDb.Email;
+        userDb.Senha = user.Senha != null ? BCrypt.Net.BCrypt.HashPassword(user.Senha) : userDb.Senha;
         userDb.DataUltimaAlteracao = DateTime.Now;
 
         _context.Usuarios.Update(userDb);

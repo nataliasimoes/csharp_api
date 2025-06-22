@@ -20,35 +20,72 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<UserModel>>> GetAllUser()
+    public async Task<ActionResult<List<UserDTO>>> GetAllUser()
     {
-        List<UserModel> usuarios = await _userRepository.GetAllUsers();
+        var usersResult = await _userRepository.GetAllUsers();
 
-        return Ok(usuarios);
+        var users = usersResult.Select(u => new UserDTO
+        {
+            Id = u.Id,
+            Nome = u.Nome,
+            Email = u.Email,
+            DataUltimaAlteracao = u.DataUltimaAlteracao
+        }).ToList();
+
+        return Ok(users);
     }
+
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<List<UserModel>>> GetAllUsers(int id)
+    public async Task<ActionResult<UserDTO>> GetUser(int id)
     {
-        UserModel usuarios = await _userRepository.GetById(id);
+        var userResult = await _userRepository.GetById(id);
 
-        return Ok(usuarios);
+        if (userResult == null)
+            return NotFound("Usuário não encontrado.");
+
+        var user = new UserDTO
+        {
+            Id = userResult.Id,
+            Nome = userResult.Nome,
+            Email = userResult.Email,
+            DataUltimaAlteracao = userResult.DataUltimaAlteracao
+        };
+
+        return Ok(user);
     }
 
+
     [HttpPost]
-    public async Task<ActionResult<UserModel>> CreateUser([FromBody] UserDTO user)
+    public async Task<ActionResult<UserDTO>> CreateUser([FromBody] CreateUserDTO user)
     {
         UserModel userRegistered = await _userRepository.AddUser(user);
 
-        return Ok(userRegistered);
+        var userResult = new UserDTO
+        {
+            Id = userRegistered.Id,
+            Nome = userRegistered.Nome,
+            Email = userRegistered.Email,
+            DataUltimaAlteracao = userRegistered.DataUltimaAlteracao
+        };
+
+        return Ok(userResult);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<UserModel>> UpdateUser([FromBody] UserDTO user, int id)
+    public async Task<ActionResult<UserDTO>> UpdateUser([FromBody] UpdateUserDTO user, int id)
     {
         UserModel userUpdated = await _userRepository.UpdateUser(user, id);
 
-        return Ok(userUpdated);
+        var userResult = new UserDTO
+        {
+            Id = userUpdated.Id,
+            Nome = userUpdated.Nome,
+            Email = userUpdated.Email,
+            DataUltimaAlteracao = userUpdated.DataUltimaAlteracao
+        };
+
+        return Ok(userResult);
     }
 
     [HttpDelete("{id}")]
