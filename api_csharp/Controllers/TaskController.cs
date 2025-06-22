@@ -1,11 +1,13 @@
 ﻿using api_csharp.DTO;
 using api_csharp.Models;
 using api_csharp.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace api_csharp.Controllers;
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class TaskController : ControllerBase

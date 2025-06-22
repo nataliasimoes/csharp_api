@@ -2,11 +2,12 @@
 
 namespace api_csharp.DTO;
 
-public class UserDTO
+public class CreateUserDTO
 {
-    public int Id { get; set; }
+    [Required]
     public string Nome { get; set; }
+    [Required]
+    [EmailAddress]
     public string Email { get; set; }
-    public DateTime DataUltimaAlteracao { get; set; }
-
+    public string Senha { get; set; }
 }
