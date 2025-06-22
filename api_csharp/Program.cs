@@ -14,15 +14,41 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        string secretKey = "";
         var builder = WebApplication.CreateBuilder(args);
+        var jwtSettings = builder.Configuration.GetSection("Jwt");
+        var secretKey = jwtSettings["Key"];
 
         // Add services to the container.
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(
+            c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Task Management System", Version = "v1" });
+
+                var securitySchema = new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Description = "",
+                    In = ParameterLocation.Header,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    Reference = new OpenApiReference
+                    {
+                        Id = JwtBearerDefaults.AuthenticationScheme,
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+
+                c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securitySchema);
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {securitySchema, new string[]{} }
+                });
+            }    
+        );
 
         builder.Services.AddEntityFrameworkSqlServer().AddDbContext<SistemaDBContext>(
             options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
@@ -33,7 +59,7 @@ public class Program
 
         builder.Services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            c.SwaggerDoc("v2", new OpenApiInfo { Title = "My API", Version = "v1" });
 
             // Habilitar documentação XML (necessário para os comentários)
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -53,8 +79,8 @@ public class Program
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = "sua_empresa",
-                ValidAudience = "sua_aplicacao",
+                ValidIssuer = jwtSettings["Issuer"],
+                ValidAudience = jwtSettings["Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
             };
         });

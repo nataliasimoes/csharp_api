@@ -24,6 +24,7 @@ public class UserRepository : IUserRepository
     {
         return await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
     }
+
     public async Task<UserModel> AddUser(CreateUserDTO dto)
     {
         var user = new UserModel
@@ -38,6 +39,12 @@ public class UserRepository : IUserRepository
 
         return user;
     }
+
+    public async Task<UserModel> GetByEmail(string email)
+    {
+        return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+    }
+
     public async Task<UserModel> UpdateUser(UpdateUserDTO user, int id)
     {
         UserModel userDb = await GetById(id) ?? throw new Exception("Usuário não foi encontrado");
@@ -52,6 +59,7 @@ public class UserRepository : IUserRepository
 
         return userDb;
     }
+
     public async Task<bool> Delete(int id)
     {
         UserModel user = await GetById(id);
@@ -66,5 +74,6 @@ public class UserRepository : IUserRepository
 
         return true;
     }
+
 
 }
