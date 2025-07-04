@@ -30,9 +30,9 @@ public class UserRepository : IUserRepository
         var user = new UserModel
         {
             Email = dto.Email,
-            Nome = dto.Nome,
-            Senha = BCrypt.Net.BCrypt.HashPassword(dto.Senha),
-            DataUltimaAlteracao = DateTime.Now
+            Name = dto.Name,
+            Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+            UpdatedAt = DateTime.Now
         };
         await _context.Usuarios.AddAsync(user);
         await _context.SaveChangesAsync();
@@ -49,10 +49,10 @@ public class UserRepository : IUserRepository
     {
         UserModel userDb = await GetById(id) ?? throw new Exception("Usuário não foi encontrado");
 
-        userDb.Nome = user.Nome ?? userDb.Nome;
+        userDb.Name = user.Name ?? userDb.Name;
         userDb.Email = user.Email ?? userDb.Email;
-        userDb.Senha = user.Senha != null ? BCrypt.Net.BCrypt.HashPassword(user.Senha) : userDb.Senha;
-        userDb.DataUltimaAlteracao = DateTime.Now;
+        userDb.Password = user.Password != null ? BCrypt.Net.BCrypt.HashPassword(user.Password) : userDb.Password;
+        userDb.UpdatedAt = DateTime.Now;
 
         _context.Usuarios.Update(userDb);
         await _context.SaveChangesAsync();

@@ -27,7 +27,7 @@ public class AuthenticationController : ControllerBase
     {
         UserModel user = await _userRepository.GetByEmail(login.Email);
 
-        if (user == null || !BCrypt.Net.BCrypt.Verify(login.Password, user.Senha))
+        if (user == null || !BCrypt.Net.BCrypt.Verify(login.Password, user.Password))
         {
             return BadRequest(new { message = "Credenciais inválidas!" });
         }

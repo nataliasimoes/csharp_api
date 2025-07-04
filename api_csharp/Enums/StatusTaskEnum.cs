@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace CadastroDeContatos.Enums;
+namespace api_csharp.Enums;
 
 public enum StatusTaskEnum
 {

@@ -1,8 +1,8 @@
 ﻿using api_csharp.Data;
 using api_csharp.DTO;
+using api_csharp.Enums;
 using api_csharp.Models;
 using api_csharp.Repository.Interfaces;
-using CadastroDeContatos.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace api_csharp.Repository;
@@ -20,9 +20,9 @@ public class TaskRepository : ITaskRepository
     {
         var query = _context.Tarefas.AsQueryable();
 
-        if (!string.IsNullOrEmpty(filter.Nome))
+        if (!string.IsNullOrEmpty(filter.Name))
         {
-            query = query.Where(t => t.Nome.Contains(filter.Nome));
+            query = query.Where(t => t.Name.Contains(filter.Name));
         }
 
         if (filter.Status.HasValue)
@@ -30,20 +30,20 @@ public class TaskRepository : ITaskRepository
             query = query.Where(t => t.Status == filter.Status.Value);
         }
 
-        if (filter.UsuarioId.HasValue)
+        if (filter.UserId.HasValue)
         {
-            query = query.Where(t => t.UsuarioId == filter.UsuarioId);
+            query = query.Where(t => t.UserId == filter.UserId);
         }
 
-        if (filter.TarefaEmAtraso.HasValue)
+        if (filter.OverdueTask.HasValue)
         {
-            if (filter.TarefaEmAtraso.Value)
+            if (filter.OverdueTask.Value)
             {
-                query = query.Where(t => !t.DataConclusao.HasValue && t.DataPrazo.HasValue && t.DataPrazo.Value.Date < DateTime.Now);
+                query = query.Where(t => !t.CompletedAt.HasValue && t.DueDate.HasValue && t.DueDate.Value.Date < DateTime.Now);
             }
             else
             {
-                query = query.Where(t => t.DataPrazo.HasValue && t.DataPrazo.Value.Date < DateTime.Now || !t.DataPrazo.HasValue);
+                query = query.Where(t => t.DueDate.HasValue && t.DueDate.Value.Date < DateTime.Now || !t.DueDate.HasValue);
             }
         }
 
@@ -54,14 +54,14 @@ public class TaskRepository : ITaskRepository
     public async Task<List<TaskModel>> GetAllTasks()
     {
         return await _context.Tarefas
-            .Include(x => x.Usuario)
+            .Include(x => x.User)
             .ToListAsync();
     }
 
     public async Task<TaskModel> GetById(int id)
     {
         return await _context.Tarefas
-            .Include(x => x.Usuario)
+            .Include(x => x.User)
             .FirstOrDefaultAsync(u => u.Id == id);
     }
 
@@ -69,12 +69,12 @@ public class TaskRepository : ITaskRepository
     {
         var task = new TaskModel
         {
-            Nome = dto.Nome,
-            Descricao = dto.Descricao,
+            Name = dto.Name,
+            Description = dto.Description,
             Status = (StatusTaskEnum)dto.Status,
-            UsuarioId = dto.UsuarioId,
-            DataPrazo = dto.DataPrazo,
-            DataUltimaAlteracao = DateTime.Now
+            UserId = dto.UserId,
+            DueDate = dto.DueDate,
+            UpdatedAt = DateTime.Now
         };
 
         await _context.Tarefas.AddAsync(task);
@@ -92,13 +92,13 @@ public class TaskRepository : ITaskRepository
             throw new Exception("Tarefa não foi encontrada");
         }
 
-        taskDb.Nome = task.Nome;
-        taskDb.Descricao = task.Descricao;
+        taskDb.Name = task.Name;
+        taskDb.Description = task.Description;
         taskDb.Status = (StatusTaskEnum)task.Status;
-        taskDb.UsuarioId = task.UsuarioId;
-        taskDb.DataPrazo = task.DataPrazo;
-        taskDb.DataConclusao = task.DataConclusao;
-        taskDb.DataUltimaAlteracao = DateTime.Now;
+        taskDb.UserId = task.UserId;
+        taskDb.DueDate = task.DueDate;
+        taskDb.CompletedAt = task.CompletedAt;
+        taskDb.UpdatedAt = DateTime.Now;
 
         _context.Tarefas.Update(taskDb);
         await _context.SaveChangesAsync();
@@ -116,8 +116,8 @@ public class TaskRepository : ITaskRepository
         }
 
         taskDb.Status = StatusTaskEnum.Completed;
-        taskDb.DataConclusao = DateTime.Now;
-        taskDb.DataUltimaAlteracao = DateTime.Now;
+        taskDb.CompletedAt = DateTime.Now;
+        taskDb.UpdatedAt = DateTime.Now;
 
         _context.Tarefas.Update(taskDb);
         await _context.SaveChangesAsync();

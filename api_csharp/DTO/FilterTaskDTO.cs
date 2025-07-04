@@ -1,4 +1,4 @@
-﻿using CadastroDeContatos.Enums;
+﻿using api_csharp.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace api_csharp.DTO;
@@ -11,7 +11,7 @@ public class FilterTaskDTO
     /// <summary>
     /// Filter by task name (partial match)
     /// </summary>
-    public string? Nome { get; set; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// Filter by task status
@@ -26,7 +26,7 @@ public class FilterTaskDTO
     /// <summary>
     /// Filter by assigned user ID
     /// </summary>
-    public int? UsuarioId { get; set; }
+    public int? UserId { get; set; }
 
     /// <summary>
     /// Filter for overdue tasks only
@@ -34,5 +34,5 @@ public class FilterTaskDTO
     /// false = Show only non-overdue tasks,
     /// null = Show all tasks (default)
     /// </summary>
-    public bool? TarefaEmAtraso { get; set; }
+    public bool? OverdueTask { get; set; }
 }

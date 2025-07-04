@@ -27,9 +27,9 @@ public class UserController : ControllerBase
         var users = usersResult.Select(u => new UserDTO
         {
             Id = u.Id,
-            Nome = u.Nome,
+            Name = u.Name,
             Email = u.Email,
-            DataUltimaAlteracao = u.DataUltimaAlteracao
+            UpdatedAt = u.UpdatedAt
         }).ToList();
 
         return Ok(users);
@@ -47,9 +47,9 @@ public class UserController : ControllerBase
         var user = new UserDTO
         {
             Id = userResult.Id,
-            Nome = userResult.Nome,
+            Name = userResult.Name,
             Email = userResult.Email,
-            DataUltimaAlteracao = userResult.DataUltimaAlteracao
+            UpdatedAt = userResult.UpdatedAt
         };
 
         return Ok(user);
@@ -64,9 +64,9 @@ public class UserController : ControllerBase
         var userResult = new UserDTO
         {
             Id = userRegistered.Id,
-            Nome = userRegistered.Nome,
+            Name = userRegistered.Name,
             Email = userRegistered.Email,
-            DataUltimaAlteracao = userRegistered.DataUltimaAlteracao
+            UpdatedAt = userRegistered.UpdatedAt
         };
 
         return Ok(userResult);
@@ -80,9 +80,9 @@ public class UserController : ControllerBase
         var userResult = new UserDTO
         {
             Id = userUpdated.Id,
-            Nome = userUpdated.Nome,
+            Name = userUpdated.Name,
             Email = userUpdated.Email,
-            DataUltimaAlteracao = userUpdated.DataUltimaAlteracao
+            UpdatedAt = userUpdated.UpdatedAt
         };
 
         return Ok(userResult);
